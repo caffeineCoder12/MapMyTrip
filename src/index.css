@@ -1,13 +1,318 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Added Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@keyframes scaleUp {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+body {
+  font-family: 'Roboto', sans-serif; /* Use a Google Font */
+  margin: 0;
+  padding: 20px;
+  color: #333;
+  background-image: url('/src/backgroundimage.jpg');
+  background-size: cover;
+}
+
+.app-container {
+  max-width: 600px; /* Set a max width for the container */
+  margin: auto; /* Center the container */
+  padding: 20px; /* Add padding */
+  background: linear-gradient(to right, #ff7f5f59, #feb47ba4);
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+h1 {
+  text-align: center; /* Center the heading */
+  color: #333; /* Heading color */
+}
+
+input {
+  width: 95%; /* Full width */
+  padding: 15px; /* Increased padding for larger input */
+  margin: 10px 0; /* Margin for spacing */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+}
+
+input:focus {
+  border-color: #ff7e5f; /* Change border color on focus */
+  outline: none; /* Remove outline */
+}
+
+button {
+  width: 100%; /* Full width */
+  padding: 15px; /* Padding for button */
+  background-color: #ff7e5f; /* Button color */
+  color: white; /* Text color */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  font-size: 16px; /* Font size */
+  transition: background-color 0.3s, transform 0.2s ease-in-out; /* Updated transition */
+  animation: scaleUp 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #feb47b; /* Change button color on hover */
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.suggestions-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestions-list li:hover {
+  background: #f0f0f0;
+}
+
+.result-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+  border: 2px solid #ff7e5f;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.result-box h2 {
+  color: #ff7e5f;
+  margin-bottom: 10px;
+}
+
+.destination-list {
+  list-style: none; /* removes bullet points */
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.destination-item {
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.destination-item:hover {
+  background-color: #f1beb2;
+}
+
+.affordable-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.affordable-item {
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  animation: popIn 0.4s ease-in-out;
+}
+
+.affordable-item:hover {
+  background: #f0f0f0;
+  transform: scale(1.02);
+}
+
+.cost-tag {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+/* Navbar Styling */
+/* Navbar Styling */
+.navbar {
+  position: fixed;
+  left: 10px;
+  top: 20px;
+  padding: 10px;
+  background-color: transparent;
+  width: fit-content;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Currency Label */
+.currency-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Dropdown Styling */
+.nav-links {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 167px; /* Moves dropdown to the right */
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 10px;
+  list-style: none;
+  width: 120px;
+  text-align: left;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+/* Show dropdown on hover */
+.menu:hover .nav-links {
+  display: block;
+}
+
+/* Currency List Item */
+.nav-links li {
+  padding: 10px;
+  cursor: pointer;
+  color: black;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-links li:hover {
+  background-color: rgba(255, 126, 95, 0.2);
+  transform: scale(1.05);
+
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* Currency Display */
+.currency-display {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-right: 15px;
+}
+
+.currency-symbol {
+  margin-right: 5px;
+  font-size: 20px;
+  color: #ff7e5f;
+}
+
+/* Autocomplete container */
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Dropdown List */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+/* List Items */
+.autocomplete-list li {
+  padding: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.autocomplete-list li:hover {
+  background: rgba(255, 126, 95, 0.2);
+}
 }

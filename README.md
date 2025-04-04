@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+🌍 MapMyTrip ✈️
+MapMyTrip is a lightweight and interactive flight cost estimator that helps users find estimated travel costs between cities or discover destinations within a budget — across multiple currencies!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+✨ Features
+🔍 From-To Cost Estimation: Enter two cities to get an estimated travel cost based on the distance.
 
-## Available Scripts
+💸 Budget-Based Suggestions: Enter your budget to find places you can fly to from a given city.
 
-In the project directory, you can run:
+💱 Multi-Currency Support: Choose between INR, USD, EUR, AUD, and SGD.
 
-### `npm start`
+📍 Accurate Distance Calculation: Uses the Haversine Formula to calculate distances between locations.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🎯 Simple & Minimal UI with responsive design.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+🧪 Demo
+You can host the project on Netlify or Vercel and paste the live link here.
 
-### `npm test`
+🛠️ Tech Stack
+React.js
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+CSS (vanilla styling)
 
-### `npm run build`
+Haversine Formula – to calculate distances between lat/long points
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+🚀 Getting Started
+1. Clone the repository
+bash
+Copy
+Edit
+git clone https://github.com/your-username/MapMyTrip.git
+cd MapMyTrip
+2. Install dependencies
+bash
+Copy
+Edit
+npm install
+3. Run the project
+bash
+Copy
+Edit
+npm start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+🎯 Future Improvements
+Autocomplete for city names using GeoDB or Mapbox
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Show travel time estimate
 
-### `npm run eject`
+Give flight details
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Add map visualization (Leaflet.js or Google Maps)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Suggest cheapest possible destination dynamically
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Deploy and share with the world 🌐
 
-## Learn More
+🤝 Contributing
+Pull requests are welcome! If you find a bug or have ideas to improve, feel free to fork and create a PR.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+📄 License
+This project is open source and available under the MIT License.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+💬 Connect with Me
+Made with 💖 by Madhuvanthi Bhishma
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
