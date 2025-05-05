@@ -61,5 +61,6 @@ Pull requests are welcome! If you find a bug or have ideas to improve, feel free
 This project is open source and available under the MIT License.
 
 💬 Connect with Me
+
 Made with 💖 by Madhuvanthi Bhishma
 
