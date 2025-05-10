@@ -13,7 +13,7 @@ MapMyTrip is a lightweight and interactive flight cost estimator that helps user
 🎯 Simple & Minimal UI with responsive design.
 
 🧪 Demo
-You can host the project on Netlify or Vercel and paste the live link here.
+https://681ef40c941c4c8ed3ef4e9e--mapmytrip.netlify.app/
 
 🛠️ Tech Stack
 React.js
