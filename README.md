@@ -1,5 +1,6 @@
-🌍 MapMyTrip ✈️
-MapMyTrip is a lightweight React app that helps users estimate flight costs between cities and discover budget-friendly destinations across multiple currencies.
+#🌍 MapMyTrip ✈️
+
+#MapMyTrip is a lightweight React app that helps users estimate flight costs between cities and discover budget-friendly destinations across multiple currencies.
 
 ✨ Features
 🔍 From-To Cost Estimation: Enter two cities to get an estimated travel cost based on the distance.
