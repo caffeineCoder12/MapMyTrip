@@ -1,35 +1,33 @@
-# 🌍 MapMyTrip ✈️
+🌍 MapMyTrip ✈️
+MapMyTrip is a lightweight and interactive flight cost estimator that helps users find estimated travel costs between cities or discover destinations within a budget — across multiple currencies!
 
-### MapMyTrip is a lightweight React app that helps users estimate flight costs between cities and discover budget-friendly destinations across multiple currencies.
-
-✨ Features ✨
-
+✨ Features
 🔍 From-To Cost Estimation: Enter two cities to get an estimated travel cost based on the distance.
 
 💸 Budget-Based Suggestions: Enter your budget to find places you can fly to from a given city.
 
-💱 Multi-Currency Support: Choose between multiple currencies.
+💱 Multi-Currency Support: Choose between INR, USD, EUR, AUD, and SGD.
 
 📍 Accurate Distance Calculation: Uses the Haversine Formula to calculate distances between locations.
 
 🎯 Simple & Minimal UI with responsive design.
 
-🧪 Demo 🧪
+🧪 Demo
 You can host the project on Netlify or Vercel and paste the live link here.
 
-🛠️ Tech Stack 🛠️
+🛠️ Tech Stack
 React.js
 
 CSS (vanilla styling)
 
 Haversine Formula – to calculate distances between lat/long points
 
-🚀 Getting Started 🚀
+🚀 Getting Started
 1. Clone the repository
 bash
 Copy
 Edit
-git clone https://github.com/caffeineCoder12/MapMyTrip.git
+git clone https://github.com/your-username/MapMyTrip.git
 cd MapMyTrip
 2. Install dependencies
 bash
@@ -42,22 +40,26 @@ Copy
 Edit
 npm start
 
-🎯 Future Improvements 🎯
+🎯 Future Improvements
 Autocomplete for city names using GeoDB or Mapbox
 
 Show travel time estimate
+
+Give flight details
 
 Add map visualization (Leaflet.js or Google Maps)
 
 Suggest cheapest possible destination dynamically
 
+
 Deploy and share with the world 🌐
 
-🤝 Contributing 🤝
+🤝 Contributing
 Pull requests are welcome! If you find a bug or have ideas to improve, feel free to fork and create a PR.
 
-📄 License 📄
+📄 License
 This project is open source and available under the MIT License.
 
-💬 Connect with Me 💬
+💬 Connect with Me
 Made with 💖 by Madhuvanthi Bhishma
+
