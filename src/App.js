@@ -1,26 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import "./index.css";
 
-const currencyRates = {
-    INR: 1,
-    USD: 0.012,
-    EUR: 0.011,
-    AUD: 0.018,
-    SGD: 0.016
-};
+const COST_PER_KM_INR = 8;
 
-const Navbar = ({ selectedCurrency, setSelectedCurrency }) => {
+const Navbar = ({ selectedCurrency, setSelectedCurrency, exchangeRates, isLoading }) => {
+    const getFlagEmoji = (currencyCode) => {
+        const exceptions = {
+            EUR: "EU",
+            USD: "US",
+            GBP: "GB",
+            XOF: "BF",
+            XAF: "CM",
+            XCD: "AG",
+            AUD: "AU",
+            CAD: "CA",
+            SGD: "SG",
+            CHF: "CH",
+            CNY: "CN",
+            INR: "IN",
+            JPY: "JP",
+            KRW: "KR",
+            MYR: "MY"
+        };
+        const countryCode = exceptions[currencyCode] || currencyCode.slice(0, 2);
+        return String.fromCodePoint(...[...countryCode.toUpperCase()].map(c => 0x1F1E6 - 65 + c.charCodeAt()));
+    };
+
+    const options = Object.keys(exchangeRates).map((code) => ({
+        value: code,
+        label: `${getFlagEmoji(code)} ${code}`,
+    }));
+
     return (
         <nav className="navbar">
             <div className="menu">
                 <div className="currency-header">Choose Currency</div>
-                <ul className="nav-links">
-                    {Object.keys(currencyRates).map((currency) => (
-                        <li key={currency} onClick={() => setSelectedCurrency(currency)}>
-                            {currency}
-                        </li>
-                    ))}
-                </ul>
+                {!isLoading && options.length > 0 ? (
+                    <Select
+                        className="currency-dropdown"
+                        options={options}
+                        value={{
+                            value: selectedCurrency,
+                            label: `${getFlagEmoji(selectedCurrency)} ${selectedCurrency}`,
+                        }}
+                        onChange={(selected) => setSelectedCurrency(selected.value)}
+                        isSearchable
+                        styles={{
+                            control: (baseStyles) => ({
+                                ...baseStyles,
+                                backgroundColor: "rgba(0, 0, 0, 0.32)",
+                                color: "white",
+                                border: "none",
+                                boxShadow: "none",
+                            }),
+                            singleValue: (baseStyles) => ({
+                                ...baseStyles,
+                                color: "white",
+                            }),
+                            menu: (baseStyles) => ({
+                                ...baseStyles,
+                                backgroundColor: "rgba(0, 0, 0, 0.32)",
+                            }),
+                            option: (baseStyles, state) => ({
+                                ...baseStyles,
+                                backgroundColor: state.isFocused ? "rgba(255, 255, 255, 0.1)" : "transparent",
+                                color: "white",
+                            }),
+                            input: (baseStyles) => ({
+                                ...baseStyles,
+                                color: "white",
+                            }),
+                        }}
+                    />
+                ) : (
+                    <div className="loading-message">Loading currencies...</div>
+                )}
             </div>
         </nav>
     );
@@ -32,14 +87,14 @@ const cityData = {
     "Barcelona, Spain": [41.3851, 2.1734],
     "Madrid, Spain": [40.4168, -3.7038],
     "London, UK": [51.5074, -0.1278],
-    "Berlin, Germany": [52.5200, 13.4050],
+    "Berlin, Germany": [52.52, 13.405],
     "Amsterdam, Netherlands": [52.3676, 4.9041],
     "Athens, Greece": [37.9838, 23.7275],
     "Istanbul, Turkey": [41.0082, 28.9784],
     "Antalya, Turkey": [36.8969, 30.7133],
     "Budapest, Hungary": [47.4979, 19.0402],
     "Tokyo, Japan": [35.6895, 139.6917],
-    "Mumbai, India": [19.0760, 72.8777],
+    "Mumbai, India": [19.076, 72.8777],
     "Bangkok, Thailand": [13.7563, 100.5018],
     "Singapore, Singapore": [1.3521, 103.8198],
     "Bali, Indonesia": [-8.4095, 115.1889],
@@ -48,8 +103,8 @@ const cityData = {
     "Marrakech, Morocco": [31.6295, -7.9811],
     "Sydney, Australia": [-33.8688, 151.2093],
     "Melbourne, Australia": [-37.8136, 144.9631],
-    "Kuala Lumpur, Malaysia": [3.1390, 101.6869],
-    "Cairo, Egypt": [30.0444, 31.2357]
+    "Kuala Lumpur, Malaysia": [3.139, 101.6869],
+    "Cairo, Egypt": [30.0444, 31.2357],
 };
 
 const getDistance = (lat1, lon1, lat2, lon2) => {
@@ -65,144 +120,210 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
     return R * c;
 };
 
-const COST_PER_KM_INR = 8;
-
 const App = () => {
-    const [fromInput, setFromInput] = useState('');
-    const [toInput, setToInput] = useState('');
-    const [budgetInput, setBudgetInput] = useState('');
-    const [selectedCurrency, setSelectedCurrency] = useState('INR');
-    const [result, setResult] = useState('');
+    const [fromInput, setFromInput] = useState("");
+    const [toInput, setToInput] = useState("");
+    const [budgetInput, setBudgetInput] = useState("");
+    const [selectedCurrency, setSelectedCurrency] = useState("INR");
+    const [result, setResult] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
     const [fromSuggestions, setFromSuggestions] = useState([]);
     const [toSuggestions, setToSuggestions] = useState([]);
+    const [exchangeRates, setExchangeRates] = useState({ INR: 1 });
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("https://open.er-api.com/v6/latest/INR")
+            .then((res) => res.json())
+            .then((data) => {
+                setExchangeRates(data.rates || { INR: 1 });
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                console.error("Error fetching rates:", err);
+                setExchangeRates({ INR: 1 });
+                setIsLoading(false);
+            });
+    }, []);
+    
+    useEffect(() => {
+        if (fromInput === "" || toInput === "" || budgetInput === "") {
+            setResult("");
+            setAlertMessage("");
+        }
+    }, [fromInput, toInput, budgetInput]);
+    
 
     const updateFromSuggestions = (value) => {
         setFromInput(value);
-        setFromSuggestions(value ? Object.keys(cityData).filter(city =>
-            city.toLowerCase().startsWith(value.toLowerCase())
-        ) : []); // Clears suggestions if input is empty
+        setFromSuggestions(
+            value
+                ? Object.keys(cityData).filter((city) =>
+                      city.toLowerCase().startsWith(value.toLowerCase())
+                  )
+                : []
+        );
     };
-    
+
     const updateToSuggestions = (value) => {
         setToInput(value);
-        setToSuggestions(value ? Object.keys(cityData).filter(city =>
-            city.toLowerCase().startsWith(value.toLowerCase())
-        ) : []); // Clears suggestions if input is empty
+        setToSuggestions(
+            value
+                ? Object.keys(cityData).filter((city) =>
+                      city.toLowerCase().startsWith(value.toLowerCase())
+                  )
+                : []
+        );
     };
-    
 
-    const handleSearch = () => {
-        if (!fromInput) {
-            setResult("Please enter a valid 'From' destination.");
+    const handleCostCalculation = () => {
+        setAlertMessage("");
+        if (!fromInput || !toInput) {
+            setAlertMessage("Please enter both 'From' and 'To' destinations.");
+            setResult("");
+            return;
+        }
+
+        const fromCoords = cityData[fromInput];
+        const toCoords = cityData[toInput];
+
+        if (!fromCoords || !toCoords) {
+            setAlertMessage("Invalid 'From' or 'To' destination. Please select from the list.");
+            setResult("");
+            return;
+        }
+
+        const distance = getDistance(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+        const travelCostINR = Math.round(distance * COST_PER_KM_INR);
+        const travelCost = Math.round(travelCostINR * (exchangeRates[selectedCurrency] || 1));
+
+        setResult(
+            <div className="result-box">
+                <h2>Travel Cost Details</h2>
+                <p><strong>From:</strong> {fromInput}</p>
+                <p><strong>To:</strong> {toInput}</p>
+                <p><strong>Estimated Cost:</strong> {selectedCurrency} {travelCost}</p>
+            </div>
+        );
+    };
+
+    const handleBudgetDestinations = () => {
+        setAlertMessage("");
+        if (!fromInput || !budgetInput) {
+            setAlertMessage("Please enter a valid 'From' destination and your budget.");
+            setResult("");
             return;
         }
 
         const fromCoords = cityData[fromInput];
         if (!fromCoords) {
-            setResult("Invalid 'From' destination. Please select from the list.");
+            setAlertMessage("Invalid 'From' destination. Please select from the list.");
+            setResult("");
             return;
         }
 
-        if (toInput) {
-            // Case 1: Both 'From' and 'To' are given -> Calculate Cost
-            const toCoords = cityData[toInput];
-            if (!toCoords) {
-                setResult("Invalid 'To' destination. Please select from the list.");
-                return;
+        const budgetINR = budgetInput / (exchangeRates[selectedCurrency] || 1);
+        let possibleDestinations = [];
+
+        Object.keys(cityData).forEach((destination) => {
+            if (destination !== fromInput) {
+                const toCoords = cityData[destination];
+                const distance = getDistance(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+                const travelCostINR = Math.round(distance * COST_PER_KM_INR);
+
+                if (travelCostINR <= budgetINR) {
+                    possibleDestinations.push(destination);
+                }
             }
+        });
 
-            const distance = getDistance(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
-            const travelCostINR = Math.round(distance * COST_PER_KM_INR);
-            const travelCost = (travelCostINR * currencyRates[selectedCurrency]).toFixed(2);
-
+        if (possibleDestinations.length === 0) {
+            setResult("No destinations found within your budget.");
+        } else {
             setResult(
                 <div className="result-box">
-                    <h2>Travel Cost Details</h2>
-                    <p><strong>From:</strong> {fromInput}</p>
-                    <p><strong>To:</strong> {toInput}</p>
-                    <p><strong>Estimated Cost:</strong> {selectedCurrency} {travelCost}</p>
+                    <h2>Possible Destinations</h2>
+                    <ul className="destination-list">
+                        {possibleDestinations.map((dest) => (
+                            <li key={dest} className="destination-item">{dest}</li>
+                        ))}
+                    </ul>
                 </div>
             );
-        } else if (budgetInput) {
-            // Case 2: 'From' + 'Budget' -> Find Possible 'To' Destinations
-            const budgetINR = budgetInput / currencyRates[selectedCurrency];
-            let possibleDestinations = [];
-
-            Object.keys(cityData).forEach((destination) => {
-                if (destination !== fromInput) {
-                    const toCoords = cityData[destination];
-                    const distance = getDistance(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
-                    const travelCostINR = Math.round(distance * COST_PER_KM_INR);
-
-                    if (travelCostINR <= budgetINR) {
-                        possibleDestinations.push(destination);
-                    }
-                }
-            });
-
-            if (possibleDestinations.length === 0) {
-                setResult("No destinations found within your budget.");
-            } else {
-                setResult(
-                    <div className="result-box">
-                        <h2>Possible Destinations</h2>
-                        <ul className="destination-list">
-                            {possibleDestinations.map((dest) => (
-                                <li key={dest} className="destination-item">{dest}</li>
-                            ))}
-                        </ul>
-                    </div>
-                );
-            }
-        } else {
-            setResult("Please enter a 'To' destination or a budget.");
         }
     };
 
     return (
         <div className="app-container">
-            <Navbar selectedCurrency={selectedCurrency} setSelectedCurrency={setSelectedCurrency} />
+            <Navbar
+                selectedCurrency={selectedCurrency}
+                setSelectedCurrency={setSelectedCurrency}
+                exchangeRates={exchangeRates}
+                isLoading={isLoading}
+            />
+
             <div className="main-box">
-                <h1>MapMyTrip ({selectedCurrency})</h1>
+                <p className="creator-portfolio">
+                    Creator portfolio : <a href="https://www.linkedin.com/in/madhuvanthi-b-762a92287/" target="_blank" rel="noopener noreferrer">link</a>
+                </p>
+                <h1>🛫 MapMyTrip ({selectedCurrency}) 🌎</h1>
+
+                {alertMessage && <div className="alert-box">{alertMessage}</div>}
 
                 <div className="input-container">
-                <input type="text" placeholder="From Destination" value={fromInput} onChange={(e) => updateFromSuggestions(e.target.value)} />
+                    <input
+                        type="text"
+                        placeholder="From Destination"
+                        value={fromInput}
+                        onChange={(e) => updateFromSuggestions(e.target.value)}
+                    />
                     {fromSuggestions.length > 0 && (
                         <ul className="suggestions-list">
                             {fromSuggestions.map((city) => (
-                                <li key={city} className="suggestion-item" onClick={() => { 
-                                    setFromInput(city); 
-                                    setFromSuggestions([]); 
-                                }}>
-                                    {city}
-                                </li>
+                                <li key={city} onClick={() => {
+                                    setFromInput(city);
+                                    setFromSuggestions([]);
+                                }}>{city}</li>
                             ))}
                         </ul>
                     )}
-
-                </div>
-
-                <div className="input-container">
-                <input type="text" placeholder="To Destination (optional)" value={toInput} onChange={(e) => updateToSuggestions(e.target.value)} />
-
+                    <input
+                        type="text"
+                        placeholder="To Destination"
+                        value={toInput}
+                        onChange={(e) => updateToSuggestions(e.target.value)}
+                    />
                     {toSuggestions.length > 0 && (
                         <ul className="suggestions-list">
                             {toSuggestions.map((city) => (
-                                <li key={city} className="suggestion-item" onClick={() => { 
-                                    setToInput(city); 
-                                    setToSuggestions([]); 
-                                }}>
-                                    {city}
-                                </li>
+                                <li key={city} onClick={() => {
+                                    setToInput(city);
+                                    setToSuggestions([]);
+                                }}>{city}</li>
                             ))}
                         </ul>
                     )}
                 </div>
 
-                <input type="text" placeholder={`Enter your budget in ${selectedCurrency} (optional)`} value={budgetInput} onChange={(e) => setBudgetInput(e.target.value)} />
+                <div className="button-container">
+                    <button onClick={handleCostCalculation}>Calculate Cost</button>
+                    <hr className="white-line" />
+                </div>
 
-                <button onClick={handleSearch}>Search</button>
-                <p className="result">{result}</p>
+                <div className="input-container">
+                    <input
+                        type="number"
+                        placeholder={`Enter your budget (${selectedCurrency})`}
+                        value={budgetInput}
+                        onChange={(e) => setBudgetInput(e.target.value)}
+                    />
+                </div>
+
+                <div className="button-container">
+                    <button onClick={handleBudgetDestinations}>Find Destinations</button>
+                </div>
+
+                <div className="result-container">{result}</div>
             </div>
         </div>
     );
