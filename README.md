@@ -6,14 +6,14 @@ MapMyTrip is a lightweight and interactive flight cost estimator that helps user
 
 💸 Budget-Based Suggestions: Enter your budget to find places you can fly to from a given city.
 
-💱 Multi-Currency Support: Choose between INR, USD, EUR, AUD, and SGD.
+💱 Multi-Currency Support: Choose between multiple currencies.
 
 📍 Accurate Distance Calculation: Uses the Haversine Formula to calculate distances between locations.
 
 🎯 Simple & Minimal UI with responsive design.
 
 🧪 Demo
-You can host the project on Netlify or Vercel and paste the live link here.
+https://mapmytrip.netlify.app/
 
 🛠️ Tech Stack
 React.js
