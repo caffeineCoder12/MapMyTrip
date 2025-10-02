@@ -27,7 +27,7 @@ Haversine Formula – to calculate distances between lat/long points
 bash
 Copy
 Edit
-git clone https://github.com/your-username/MapMyTrip.git
+git clone https://github.com/caffeineCoder/MapMyTrip.git
 cd MapMyTrip
 2. Install dependencies
 bash
