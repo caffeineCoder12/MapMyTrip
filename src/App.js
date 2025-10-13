@@ -313,7 +313,7 @@ const App = () => {
                 <div className="input-container">
                     <input
                         type="number"
-                        placeholder={`Enter your budget (${selectedCurrency})`}
+                        placeholder={`Enter your budget for one-way flight (${selectedCurrency})`}
                         value={budgetInput}
                         onChange={(e) => setBudgetInput(e.target.value)}
                     />
